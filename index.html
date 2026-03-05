@@ -17,21 +17,37 @@
             margin: 0 auto;
             padding: 60px 24px;
         }
+        .hero {
+            text-align: center;
+            margin-bottom: 48px;
+        }
         .icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 22px;
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
             margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
         h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
-        .subtitle {
+        .tagline {
             font-size: 18px;
             color: #999;
             margin-bottom: 32px;
+        }
+        .appstore-btn {
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .appstore-btn img {
+            height: 48px;
+        }
+        .platform-note {
+            font-size: 13px;
+            color: #666;
         }
         p {
             font-size: 16px;
@@ -79,15 +95,22 @@
 </head>
 <body>
     <div class="container">
-        <img src="app-icon-200.png" alt="Milestone App Icon" class="icon">
-        <h1>Milestone</h1>
-        <p class="subtitle">Birthdays & Anniversaries</p>
+        <div class="hero">
+            <img src="app-icon-200.png" alt="Milestone App Icon" class="icon">
+            <h1>Milestone</h1>
+            <p class="tagline">Never miss a birthday or anniversary.</p>
+            <a href="https://apps.apple.com/us/app/milestone-birthdays/id6759117799" class="appstore-btn">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+            </a>
+            <p class="platform-note">Available for iPhone &middot; iOS 17+</p>
+        </div>
 
         <p>Milestone makes it easy to keep track of the birthdays and anniversaries that matter most to you. Add a date and instantly see ages, countdowns, zodiac signs, birthstones, and more.</p>
 
         <ul class="features">
             <li>Birthday tracking with automatic age calculation</li>
             <li>Anniversary tracking with countdowns</li>
+            <li>Home screen widgets to see upcoming dates at a glance</li>
             <li>Zodiac sign, birthstone, and generation info</li>
             <li>School grade calculation for kids and students</li>
             <li>Search and sort your lists</li>

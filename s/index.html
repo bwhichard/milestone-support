@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shared with you in Milestone</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Someone shared birthdays or anniversaries with you in Milestone.">
+<meta property="og:title" content="Shared with you in Milestone">
+<meta property="og:description" content="Tap to add these birthdays and anniversaries to Milestone.">
+<meta property="og:image" content="https://trymilestone.app/app-icon-200.png">
+<meta name="apple-itunes-app" content="app-id=6759117799">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #1a1a1a; color: #f0f0f0; line-height: 1.6;
+  }
+  .container { max-width: 640px; margin: 0 auto; padding: 60px 24px; text-align: center; }
+  .icon { width: 96px; height: 96px; border-radius: 22px; margin-bottom: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  h1 { font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+  p { font-size: 16px; color: #ccc; margin-bottom: 16px; }
+  .card { background: #242424; border: 1px solid #333; border-radius: 14px; padding: 16px 20px; margin: 24px 0; text-align: left; }
+  .card h2 { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #d4682e; margin-bottom: 6px; }
+  .card ul { padding-left: 18px; color: #f0f0f0; }
+  .btn {
+    display: inline-block; background: #d4682e; color: #fff; text-decoration: none; font-weight: 600;
+    padding: 12px 28px; border-radius: 12px; margin: 8px 0 16px;
+  }
+  .btn:hover { text-decoration: none; opacity: .9; }
+  #hint { font-size: 14px; color: #999; }
+  small { display: block; margin-top: 18px; font-size: 14px; color: #999; }
+  a { color: #d4682e; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="container">
+  <img class="icon" src="/app-icon-200.png" alt="Milestone app icon" width="96" height="96">
+  <h1 id="title">Shared with you in Milestone</h1>
+  <p id="summary">Open this link on an iPhone or iPad with Milestone installed to add these dates.</p>
+
+  <div class="card hero" id="who" hidden>
+    <h2>Includes</h2>
+    <ul id="names"></ul>
+  </div>
+
+  <a class="btn" id="store" href="https://apps.apple.com/us/app/milestone-birthdays/id6759117799">Get Milestone on the App Store</a>
+  <p id="hint">Already installed? Tap the link again from Messages. After installing, come back to Messages and tap the link once more.</p>
+
+  <small id="note" hidden></small>
+</main>
+
+<script>
+// Everything below runs in the browser. The shared data lives in the URL fragment, which is
+// never sent to a server, so this page can't see or log it; we only use it to show a summary.
+(async function () {
+  const $ = (id) => document.getElementById(id);
+  const fragment = location.hash.slice(1);
+  const note = (text) => { $("note").textContent = text; $("note").hidden = false; };
+
+  if (!fragment) return;
+  const m = fragment.match(/^v(\d+)\.(.*)$/);
+  if (!m) { note("This link looks incomplete. Ask the sender to share it again."); return; }
+  if (m[1] !== "1") {
+    $("title").textContent = "Update Milestone to open this";
+    $("summary").textContent = "This share was made with a newer version of Milestone.";
+    return;
+  }
+  try {
+    let b64 = m[2].replace(/-/g, "+").replace(/_/g, "/");
+    b64 += "=".repeat((4 - (b64.length % 4)) % 4);
+    const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+    const payload = JSON.parse(await new Response(stream).text());
+    const persons = payload.persons || [], annivs = payload.anniversaries || [];
+    const bits = [];
+    if (persons.length) bits.push(persons.length + (persons.length === 1 ? " birthday" : " birthdays"));
+    if (annivs.length) bits.push(annivs.length + (annivs.length === 1 ? " anniversary" : " anniversaries"));
+    if (!bits.length) return;
+    $("title").textContent = bits.join(" and ") + " shared with you";
+    $("summary").textContent = "Open this on an iPhone or iPad with Milestone to add them.";
+    const list = $("names");
+    const labels = persons.map((p) => [p.firstName, p.lastName].filter(Boolean).join(" "))
+      .concat(annivs.map((a) => a.name));
+    labels.slice(0, 8).forEach((label) => {
+      const li = document.createElement("li");
+      li.textContent = label;           // textContent, never innerHTML: names are untrusted
+      list.appendChild(li);
+    });
+    if (labels.length > 8) {
+      const li = document.createElement("li");
+      li.textContent = "and " + (labels.length - 8) + " more";
+      list.appendChild(li);
+    }
+    $("who").hidden = false;
+  } catch (e) {
+    note("This link couldn't be read. Ask the sender to share it again.");
+  }
+})();
+</script>
+</body>
+</html>

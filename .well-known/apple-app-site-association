@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["HWLGH75UFB.com.brandonwhichard.Milestone"],
+        "components": [
+          { "/": "/s/*", "comment": "Shared birthdays and anniversaries" }
+        ]
+      }
+    ]
+  }
+}

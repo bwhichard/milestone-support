@@ -22,7 +22,7 @@ iOS opens the app for `/s/*` only if `/.well-known/apple-app-site-association` i
 
 ## Deploy
 
-Cloudflare Pages, connected to this repo: framework none, build command empty, output directory `/`. Custom domain `trymilestone.app`. No `CNAME` file is needed (that is only for GitHub Pages). Push to `main` to deploy.
+Cloudflare, connected to this repo via Git. The dashboard builds it as a Worker with static assets (`npx wrangler deploy`, auto-generated config, assets directory `.`); there is no build step. `.assetsignore` keeps `.git`, `README.md` and build files out of the published assets. Custom domain `trymilestone.app` is attached under the Worker's Settings → Domains & Routes. No `CNAME` file is needed (that is only for GitHub Pages). Push to `main` to deploy.
 
 Verify after deploy:
 

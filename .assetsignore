@@ -7,3 +7,4 @@ README.md
 .env.schema
 .env.local
 .env.*.local
+.cloudflare

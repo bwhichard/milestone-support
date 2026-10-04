@@ -4,3 +4,6 @@
 wrangler.jsonc
 README.md
 .nojekyll
+.env.schema
+.env.local
+.env.*.local

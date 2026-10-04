@@ -3,7 +3,7 @@
 Static site for the iOS app [Milestone](https://apps.apple.com/us/app/milestone-birthdays/id6759117799), served at https://trymilestone.app. No build step, no dependencies; the repo root is the site.
 
 - `index.html` – landing/support page
-- `privacy.html` – privacy policy
+- `privacy.html` – privacy policy (served at `/privacy`)
 - `s/index.html` – landing page for share links
 - `.well-known/apple-app-site-association` – Apple Universal Links file
 - `_headers` – Cloudflare Pages response headers
